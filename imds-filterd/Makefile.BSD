@@ -1,0 +1,51 @@
+PROG=	imds-filterd
+MAN1=
+
+# Library code required
+LDADD_REQ=	-ljail
+
+# Useful relative directory
+LIBCPERCIVA_DIR =	../libcperciva
+
+# imds-filterd code
+SRCS	=	main.c
+SRCS	+=	netconfig.c
+SRCS	+=	tunsetup.c
+SRCS	+=	packets.c
+SRCS	+=	conns.c
+SRCS	+=	ident.c
+
+# Data structures
+.PATH.c	:	${LIBCPERCIVA_DIR}/datastruct
+SRCS	+=	elasticarray.c
+SRCS	+=	ptrheap.c
+SRCS	+=	timerqueue.c
+IDIRS	+=	-I ${LIBCPERCIVA_DIR}/datastruct
+
+# Event loop
+.PATH.c	:	${LIBCPERCIVA_DIR}/events
+SRCS	+=	events.c
+SRCS	+=	events_immediate.c
+SRCS	+=	events_network.c
+SRCS	+=	events_network_selectstats.c
+SRCS	+=	events_timer.c
+IDIRS	+=	-I ${LIBCPERCIVA_DIR}/events
+
+# Event-driven networking
+.PATH.c	:	${LIBCPERCIVA_DIR}/network
+SRCS	+=	network_accept.c
+SRCS	+=	network_read.c
+SRCS	+=	network_write.c
+IDIRS	+=	-I ${LIBCPERCIVA_DIR}/network
+
+# Utility functions
+.PATH.c	:	${LIBCPERCIVA_DIR}/util
+SRCS	+=	asprintf.c
+SRCS	+=	daemonize.c
+SRCS	+=	monoclock.c
+SRCS	+=	noeintr.c
+SRCS	+=	sock.c
+SRCS	+=	warnp.c
+IDIRS	+=	-I ${LIBCPERCIVA_DIR}/util
+
+.include <bsd.prog.mk>

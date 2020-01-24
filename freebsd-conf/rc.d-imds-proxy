@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# PROVIDE: imds-proxy
+# REQUIRE: imds-filterd
+# BEFORE:  SERVERS
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable imds-proxy:
+#
+# imds_filterd_enable:	Set to YES to enable imds-proxy.
+#
+# Note that the same variable is used for the imds-filterd rc.d script.
+
+. /etc/rc.subr
+
+name="imds_proxy"
+rcvar=imds_filterd_enable
+command=/usr/local/sbin/imds-proxy
+pidfile="/var/run/imds-proxy.pid"
+command_args="-f /usr/local/etc/imds.conf -p ${pidfile} -u imds:imds"
+start_cmd=imds_proxy_start
+stop_cmd=imds_proxy_stop
+
+imds_proxy_start() {
+	echo "Starting ${name}."
+	jexec imds ${command} ${command_args}
+}
+imds_proxy_stop() {
+	# We can't use the normal check_pidfile logic since it won't look
+	# inside the imds jail.  Just assume that the pidfile is correct.
+	if ! [ -f ${pidfile} ]; then
+		echo "${name} is not running?"
+		return 1
+	fi
+	echo "Stopping ${name}."
+	rc_pid=`cat ${pidfile}`
+	kill -TERM $rc_pid
+	wait_for_pids $rc_pid
+	rm ${pidfile}
+}
+
+load_rc_config $name
+run_rc_command "$1"

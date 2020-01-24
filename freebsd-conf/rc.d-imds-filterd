@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# PROVIDE: imds-filterd
+# REQUIRE: NETWORKING
+# BEFORE:  SERVERS
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable imds-filterd:
+#
+# imds_filterd_enable:	Set to YES to enable imds-filterd.
+#
+# Note that the same variable is used for the imds-proxy rc.d script.
+
+. /etc/rc.subr
+
+name="imds_filterd"
+rcvar=${name}_enable
+command=/usr/local/sbin/imds-filterd
+pidfile="/var/run/imds-filterd.pid"
+start_precmd="${name}_prestart"
+start_postcmd="${name}_poststart"
+proxyuser="imds:imds"
+
+imds_filterd_prestart()
+{
+	if [ "`sysctl -qn kern.features.vimage`" != "1" ]; then
+		warn "imds-filterd requires a kernel with VIMAGE support"
+		return 1
+	fi
+}
+
+imds_filterd_poststart()
+{
+	chown ${proxyuser} /var/run/imds.sock /var/run/imds-ident.sock
+	chmod 600 /var/run/imds.sock /var/run/imds-ident.sock
+}
+
+load_rc_config $name
+run_rc_command "$1"

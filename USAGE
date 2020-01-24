@@ -1,0 +1,31 @@
+Installing
+----------
+
+This code should build and install on FreeBSD via "make all install".
+
+Configuration
+-------------
+
+This code ships with several configuration files:
+
+imds.conf				- Sample configuration for imds-proxy
+freebsd-conf/newsyslog-imds.conf	- newsyslog conf for /var/log/imds.log
+freebsd-conf/syslog-imds.conf		- syslog conf for /var/log/imds.log
+freebsd-conf/rc.d-imds-{filterd, proxy}	- FreeBSD rc.d scripts.
+
+In addition, the user and group imds:imds must be created in order for the
+rc.d scripts to function.
+
+Using the FreeBSD port is recommended since it will automate dispersing the
+configuration files and creating the user and group.
+
+Usage
+-----
+
+On FreeBSD:
+1. Install the "security/imds-filterd" port or the "imds-filterd" package.
+2. Add imds_filterd_enable=YES to /etc/rc.conf.
+3. Edit imds.conf as desired.
+4. Reboot, or start daemons:
+	service imds-filterd start
+	service imds-proxy start

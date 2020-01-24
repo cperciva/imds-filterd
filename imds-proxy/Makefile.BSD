@@ -1,0 +1,35 @@
+PROG=	imds-proxy
+MAN1=
+
+# Library code required
+LDADD_REQ=	-lpthread
+
+# Useful relative directory
+LIBCPERCIVA_DIR =	../libcperciva
+
+# imds-proxy code
+SRCS	=	main.c
+SRCS	+=	http.c
+SRCS	+=	ident.c
+SRCS	+=	request.c
+SRCS	+=	uri2path.c
+SRCS	+=	conf.c
+
+# Data structures
+.PATH.c	:	${LIBCPERCIVA_DIR}/datastruct
+SRCS	+=	elasticarray.c
+IDIRS	+=	-I ${LIBCPERCIVA_DIR}/datastruct
+
+# Utility functions
+.PATH.c	:	${LIBCPERCIVA_DIR}/util
+SRCS	+=	asprintf.c
+SRCS	+=	daemonize.c
+SRCS	+=	getopt.c
+SRCS	+=	hexify.c
+SRCS	+=	noeintr.c
+SRCS	+=	setuidgid.c
+SRCS	+=	sock.c
+SRCS	+=	warnp.c
+IDIRS	+=	-I ${LIBCPERCIVA_DIR}/util
+
+.include <bsd.prog.mk>
