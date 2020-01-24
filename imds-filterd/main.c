@@ -140,7 +140,7 @@ main(int argc, char * argv[])
 			warnp("Error in event loop");
 			break;
 		}
-	};
+	}
 
 	/* Clean up the pidfile, sockets, tunnels and jail. */
 	unlink("/var/run/imds-filterd.pid");
