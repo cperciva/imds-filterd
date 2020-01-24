@@ -12,6 +12,9 @@ access to everything; most unprivileged users granted access to everything
 except IAM role credentials; but the www user denied access to the entire
 Instance Metadata Service in order to guard against SSRF and similar attacks.
 
+At present this code only works on FreeBSD; we hope to support other
+platforms (e.g., Linux) in the future.  (Send patches!)
+
 Code layout
 -----------
 
