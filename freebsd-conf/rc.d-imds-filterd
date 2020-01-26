@@ -28,6 +28,11 @@ imds_filterd_prestart()
 		warn "imds-filterd requires a kernel with VIMAGE support"
 		return 1
 	fi
+	# Make sure that the gateway to the IMDS is in the ARP cache.
+	route -n get 169.254.169.254 |
+	    grep -E '^ +gateway:' |
+	    cut -f 2 -d : |
+	    xargs ping -c 1 >/dev/null
 }
 
 imds_filterd_poststart()
