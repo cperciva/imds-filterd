@@ -126,7 +126,7 @@ main(int argc, char * argv[])
 	/* Read the configuration file. */
 	if ((imdsc = conf_read(opt_f)) == NULL) {
 		warnp("Could not read configuration file: %s", opt_f);
-		goto err1;
+		goto err2;
 	}
 
 	/* Bind to 0.0.0.0:80 and accept connections. */
