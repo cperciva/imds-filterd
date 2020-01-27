@@ -41,7 +41,6 @@ parseuid(char * p, size_t len, uid_t * u)
 	struct passwd * res;
 	char buf[PWBUFLEN];
 	char * s;
-	char * e;
 
 	/* Create a NUL-terminated string with the name. */
 	if ((s = malloc(len + 1)) == NULL)
@@ -85,7 +84,6 @@ parsegid(char * p, size_t len, gid_t * g)
 	struct group * res;
 	char buf[PWBUFLEN];
 	char * s;
-	char * e;
 
 	/* Create a NUL-terminated string with the name. */
 	if ((s = malloc(len + 1)) == NULL)
