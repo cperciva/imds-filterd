@@ -16,6 +16,7 @@
 
 name="imds_proxy"
 rcvar=imds_filterd_enable
+: ${imds_filterd_enable=NO}
 command=/usr/local/sbin/imds-proxy
 pidfile="/var/run/imds-proxy.pid"
 command_args="-f /usr/local/etc/imds.conf -p ${pidfile} -u imds:imds"

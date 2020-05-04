@@ -16,6 +16,7 @@
 
 name="imds_filterd"
 rcvar=${name}_enable
+: ${imds_filterd_enable=NO}
 command=/usr/local/sbin/imds-filterd
 pidfile="/var/run/imds-filterd.pid"
 start_precmd="${name}_prestart"
