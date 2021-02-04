@@ -86,13 +86,13 @@ extractaddrs(char * p, struct sockaddr * sas[RTAX_MAX])
 		}
 
 		/* Which address type is this? */
-		if ((i = ffs(rt->rtm_addrs & ((-1) << i))) == 0) {
+		if ((i = ffs(rt->rtm_addrs & ~((1 << i) - 1))) == 0) {
 			warn0("Routing message contains wrong number of addresses!");
 			goto err0;
 		}
 		sas[i - 1] = sa;
 	}
-	if ((rt->rtm_addrs & ((-1) << i)) != 0) {
+	if ((rt->rtm_addrs & ~((1 << i) - 1)) != 0) {
 		warn0("Routing message contains wrong number of addresses!");
 		goto err0;
 	}
