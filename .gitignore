@@ -1,0 +1,9 @@
+# Config
+cflags-filter.sh
+cpusupport-config.h
+posix-flags.sh
+
+# Compiled files
+*.o
+imds-filterd/imds-filterd
+imds-proxy/imds-proxy
