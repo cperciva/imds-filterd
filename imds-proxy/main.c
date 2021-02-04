@@ -154,7 +154,7 @@ main(int argc, char * argv[])
 	}
 
 	/* Daemonize. */
-	if (daemonize("/var/run/imds-proxy.pid")) {
+	if (daemonize(opt_p)) {
 		warnp("daemonize");
 		goto err4;
 	}

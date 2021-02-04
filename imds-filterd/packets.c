@@ -81,7 +81,7 @@ outpkt(void * cookie)
 	 * IP packet through a tunnel into the jail.
 	 */
 	if (conns_isours(srcaddr, srcport) &&
-	    (dstaddr == os->dstaddr) && (dstport = os->dstport)) {
+	    (dstaddr == os->dstaddr) && (dstport == os->dstport)) {
 		/* Write the ethernet frame over the external interface. */
 		wlen = rlen + 14;
 		if (write(os->extif, os->etherframe, wlen) != wlen) {
