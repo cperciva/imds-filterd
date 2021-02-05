@@ -54,6 +54,7 @@ gotdata(void * cookie, ssize_t len)
 	struct cstate * cs = cookie;
 	struct sockaddr_in addrs[2];
 	struct xucred uc;
+	int printlen;
 	size_t size = sizeof(struct xucred);
 	size_t i;
 
@@ -83,10 +84,20 @@ gotdata(void * cookie, ssize_t len)
 	assert(uc.cr_ngroups <= XU_NGROUPS);
 
 	/* Construct and send a response. */
-	cs->olen = sprintf(cs->outbuf, "%u\n", (unsigned int)uc.cr_uid);
-	for (i = 0; i < (size_t)uc.cr_ngroups; i++)
-		cs->olen += sprintf(&cs->outbuf[cs->olen], "%u,",
-		    (unsigned int)uc.cr_groups[i]);
+	if ((printlen = sprintf(cs->outbuf, "%u\n",
+	    (unsigned int)uc.cr_uid)) < 0) {
+		warnp("sprintf");
+		goto drop;
+	}
+	cs->olen = (size_t)printlen;
+	for (i = 0; i < (size_t)uc.cr_ngroups; i++) {
+		if ((printlen = sprintf(&cs->outbuf[cs->olen], "%u,",
+		    (unsigned int)uc.cr_groups[i])) < 0) {
+			warnp("sprintf");
+			goto drop;
+		}
+		cs->olen += (size_t)printlen;
+	}
 	cs->outbuf[cs->olen - 1] = '\n';
 	if (network_write(cs->s, (uint8_t *)cs->outbuf, cs->olen, cs->olen,
 	    sentdata, cs) == NULL) {
