@@ -114,6 +114,7 @@ request_read(FILE * f, char ** req, char ** path)
 		warnp("Could not read Request-Line");
 		goto err0;
 	}
+	(void)linelen; /* This linelen is not used beyond this point. */
 	if ((p = strchr(line, ' ')) == NULL) {
 		warn0("Invalid Request-Line read");
 		goto err1;
