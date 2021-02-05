@@ -119,9 +119,9 @@ netconfig_getif(struct sockaddr_in * srcaddr, struct sockaddr_in * gwaddr,
 	int mib[] = {CTL_NET, PF_ROUTE, 0, AF_INET, NET_RT_DUMP, 0};
 	in_addr_t rtdst, rtmsk;
 	int64_t best_rtmsk = -1;
-	u_short best_index;
-	struct sockaddr * best_addr;
-	struct sockaddr * best_gwaddr;
+	u_short best_index = (u_short)-1;
+	struct sockaddr * best_addr = NULL;
+	struct sockaddr * best_gwaddr = NULL;
 	char * buf;
 	char * p;
 	struct rt_msghdr * rt;
