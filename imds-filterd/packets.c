@@ -84,13 +84,14 @@ outpkt(void * cookie)
 	    (dstaddr == os->dstaddr) && (dstport == os->dstport)) {
 		/* Write the ethernet frame over the external interface. */
 		wlen = rlen + 14;
-		if (write(os->extif, os->etherframe, wlen) != wlen) {
+		if (write(os->extif, os->etherframe, (size_t)wlen) != wlen) {
 			warnp("Error writing ethernet frame");
 			goto err0;
 		}
 	} else {
 		/* Write the IPv4 packet into the other tunnel. */
-		if (write(os->wrtun, &os->etherframe[14], rlen) != rlen) {
+		if (write(os->wrtun, &os->etherframe[14], (size_t)rlen)
+		    != rlen) {
 			warnp("Error writing packet into tunnel");
 			goto err0;
 		}
@@ -196,7 +197,7 @@ inpkt(void * cookie)
 	}
 
 	/* Write the IPv4 packet into the other tunnel. */
-	if (write(is->wrtun, is->buf, rlen) != rlen) {
+	if (write(is->wrtun, is->buf, (size_t)rlen) != rlen) {
 		warnp("Error writing packet into tunnel");
 		goto err0;
 	}
