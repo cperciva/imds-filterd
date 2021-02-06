@@ -88,7 +88,7 @@ ident(int s, struct sock_addr * const * id,
 		warn0("Could not parse uid from ident daemon!");
 		goto err1;
 	}
-	*uid = i;
+	*uid = (uid_t)i;
 
 	/* Allocate an elastic array of gids. */
 	if ((gs = gidlist_init(0)) == NULL)
@@ -96,7 +96,7 @@ ident(int s, struct sock_addr * const * id,
 
 	/* Read the group IDs. */
 	while (fscanf(f_id, "%jd,", &i) == 1) {
-		g = i;
+		g = (gid_t)i;
 		if (gidlist_append(gs, &g, 1))
 			goto err2;
 	}
