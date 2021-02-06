@@ -9,7 +9,9 @@
 
 #include <netinet/in.h>
 
+#include <assert.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,10 +23,13 @@ static int
 sysctldump(int mib[], size_t miblen, char ** buf, size_t * len)
 {
 
+	/* Sanity checks. */
+	assert(miblen <= UINT_MAX);
+
 	/* Loop until we manage to dump the table. */
 	while (1) {
 		/* How large a buffer do we need? */
-		if (sysctl(mib, miblen, NULL, len, NULL, 0)) {
+		if (sysctl(mib, (u_int)miblen, NULL, len, NULL, 0)) {
 			warnp("sysctl");
 			goto err0;
 		}
@@ -36,7 +41,7 @@ sysctldump(int mib[], size_t miblen, char ** buf, size_t * len)
 		}
 
 		/* Try to dump the table. */
-		if (sysctl(mib, miblen, *buf, len, NULL, 0)) {
+		if (sysctl(mib, (u_int)miblen, *buf, len, NULL, 0)) {
 			if (errno == ENOMEM) {
 				/*
 				 * The table we're dumping must have grown;
