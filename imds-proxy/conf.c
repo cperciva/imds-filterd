@@ -180,7 +180,7 @@ conf_read(const char * path)
 			r.rtype = RTYPE_UID;
 			if ((sp = strchr(p, ' ')) == NULL)
 				goto invalid;
-			if (parseuid(p, sp - p, &u))
+			if (parseuid(p, (size_t)(sp - p), &u))
 				goto err2;
 			p = &sp[1];
 			r.id = u;
@@ -189,7 +189,7 @@ conf_read(const char * path)
 			r.rtype = RTYPE_GID;
 			if ((sp = strchr(p, ' ')) == NULL)
 				goto invalid;
-			if (parsegid(p, sp - p, &g))
+			if (parsegid(p, (size_t)(sp - p), &g))
 				goto err2;
 			p = &sp[1];
 			r.id = g;
